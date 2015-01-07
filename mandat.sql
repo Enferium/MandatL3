@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mer 17 Décembre 2014 à 21:20
+-- Généré le :  Mer 07 Janvier 2015 à 19:09
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -53,7 +53,44 @@ CREATE TABLE IF NOT EXISTS `diplome` (
   `id_diplome` int(11) NOT NULL AUTO_INCREMENT,
   `libele_diplome` varchar(60) NOT NULL,
   PRIMARY KEY (`id_diplome`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
+
+--
+-- Contenu de la table `diplome`
+--
+
+INSERT INTO `diplome` (`id_diplome`, `libele_diplome`) VALUES
+(1, 'L1 AES'),
+(2, 'L2 AES'),
+(3, 'L3 AES'),
+(4, 'DAEU A'),
+(5, 'DAEU B'),
+(6, 'M1 FLE'),
+(7, 'M2 FLE'),
+(8, 'L1 GEOGRAPHIE'),
+(9, 'L2 GEOGRAPHIE'),
+(10, 'L3 GEOGRAPHIE'),
+(11, 'M1 GEOGRAPHIE'),
+(12, 'M2 GEOGRAPHIE'),
+(13, 'L1 HISTOIRE'),
+(14, 'L2 HISTOIRE'),
+(15, 'L3 HISTOIRE'),
+(16, 'M1 HISTOIRE'),
+(17, 'M2 HISTOIRE'),
+(18, 'L3 INFORMATIQUE'),
+(19, 'M1 DVL'),
+(20, 'M2 DVL'),
+(21, 'M1 I2A'),
+(22, 'M2 I2A'),
+(23, 'M1 MANAGEMENT'),
+(24, 'M2 MANAGEMENT'),
+(25, 'L1 MATHEMATIQUES'),
+(26, 'L2 MATHEMATIQUES'),
+(27, 'L3 MATHEMATIQUES'),
+(28, 'M1 MATHEMATIQUES'),
+(29, 'M2 MATHEMATIQUES'),
+(30, 'M1 ENSEIGNEMENT MATHEMATIQUES'),
+(31, 'M2 ENSEIGNEMENT MATHEMATIQUES');
 
 -- --------------------------------------------------------
 
@@ -62,9 +99,17 @@ CREATE TABLE IF NOT EXISTS `diplome` (
 --
 
 CREATE TABLE IF NOT EXISTS `droits` (
-  `id_ent` int(11) NOT NULL,
-  `code_droit` int(11) NOT NULL
+  `id_ent` varchar(24) NOT NULL,
+  `code_droit` int(11) NOT NULL,
+  `mdp` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `droits`
+--
+
+INSERT INTO `droits` (`id_ent`, `code_droit`, `mdp`) VALUES
+('twesterm', 3, 'toto');
 
 -- --------------------------------------------------------
 
@@ -91,6 +136,16 @@ CREATE TABLE IF NOT EXISTS `est en` (
   KEY `id_etudiant` (`id_etudiant`),
   KEY `id_diplome` (`id_diplome`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `est en`
+--
+
+INSERT INTO `est en` (`id_etudiant`, `id_diplome`) VALUES
+(1, 18),
+(2, 18),
+(3, 18),
+(4, 18);
 
 -- --------------------------------------------------------
 
@@ -120,6 +175,14 @@ CREATE TABLE IF NOT EXISTS `est originaire de` (
   KEY `id_pays` (`id_pays`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Contenu de la table `est originaire de`
+--
+
+INSERT INTO `est originaire de` (`id_etudiant`, `id_pays`) VALUES
+(1, 5),
+(4, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -130,7 +193,16 @@ CREATE TABLE IF NOT EXISTS `etat` (
   `id_etat` int(11) NOT NULL AUTO_INCREMENT,
   `libelle_etat` varchar(60) NOT NULL,
   PRIMARY KEY (`id_etat`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Contenu de la table `etat`
+--
+
+INSERT INTO `etat` (`id_etat`, `libelle_etat`) VALUES
+(1, 'Attente de paiement'),
+(2, 'A payé'),
+(3, 'En cours');
 
 -- --------------------------------------------------------
 
@@ -142,10 +214,20 @@ CREATE TABLE IF NOT EXISTS `etudiant` (
   `id_etudiant` int(11) NOT NULL AUTO_INCREMENT,
   `prenom` varchar(60) NOT NULL,
   `nom` varchar(60) NOT NULL,
-  `identite_payeur` int(11) NOT NULL,
+  `identite_payeur` varchar(62) NOT NULL,
   PRIMARY KEY (`id_etudiant`),
   KEY `prenom` (`prenom`,`nom`,`identite_payeur`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Contenu de la table `etudiant`
+--
+
+INSERT INTO `etudiant` (`id_etudiant`, `prenom`, `nom`, `identite_payeur`) VALUES
+(3, 'Benoit', 'Crivelli', 'Benoit Crivelli'),
+(4, 'Elodie', 'Bernard', 'Elodie Bernard'),
+(2, 'Mathieu', 'Briland', 'Mathieu Briland'),
+(1, 'Thomas', 'Westermann', 'Thomas Westermann');
 
 -- --------------------------------------------------------
 
@@ -448,29 +530,29 @@ ALTER TABLE `a fait`
 -- Contraintes pour la table `est de type`
 --
 ALTER TABLE `est de type`
-  ADD CONSTRAINT `est de type_ibfk_2` FOREIGN KEY (`id_type_paiement`) REFERENCES `type_paiement` (`id_type_paiement`),
-  ADD CONSTRAINT `est de type_ibfk_1` FOREIGN KEY (`id_paiement`) REFERENCES `paiement` (`id_paiement`);
+  ADD CONSTRAINT `est de type_ibfk_1` FOREIGN KEY (`id_paiement`) REFERENCES `paiement` (`id_paiement`),
+  ADD CONSTRAINT `est de type_ibfk_2` FOREIGN KEY (`id_type_paiement`) REFERENCES `type_paiement` (`id_type_paiement`);
 
 --
 -- Contraintes pour la table `est en`
 --
 ALTER TABLE `est en`
-  ADD CONSTRAINT `est en_ibfk_2` FOREIGN KEY (`id_diplome`) REFERENCES `diplome` (`id_diplome`),
-  ADD CONSTRAINT `est en_ibfk_1` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiant` (`id_etudiant`);
+  ADD CONSTRAINT `est en_ibfk_1` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiant` (`id_etudiant`),
+  ADD CONSTRAINT `est en_ibfk_2` FOREIGN KEY (`id_diplome`) REFERENCES `diplome` (`id_diplome`);
 
 --
 -- Contraintes pour la table `est en situation de`
 --
 ALTER TABLE `est en situation de`
-  ADD CONSTRAINT `est en situation de_ibfk_2` FOREIGN KEY (`id_paiement`) REFERENCES `paiement` (`id_paiement`),
-  ADD CONSTRAINT `est en situation de_ibfk_1` FOREIGN KEY (`id_etat`) REFERENCES `etat` (`id_etat`);
+  ADD CONSTRAINT `est en situation de_ibfk_1` FOREIGN KEY (`id_etat`) REFERENCES `etat` (`id_etat`),
+  ADD CONSTRAINT `est en situation de_ibfk_2` FOREIGN KEY (`id_paiement`) REFERENCES `paiement` (`id_paiement`);
 
 --
 -- Contraintes pour la table `est originaire de`
 --
 ALTER TABLE `est originaire de`
-  ADD CONSTRAINT `est originaire de_ibfk_2` FOREIGN KEY (`id_pays`) REFERENCES `pays` (`id_pays`),
-  ADD CONSTRAINT `est originaire de_ibfk_1` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiant` (`id_etudiant`);
+  ADD CONSTRAINT `est originaire de_ibfk_1` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiant` (`id_etudiant`),
+  ADD CONSTRAINT `est originaire de_ibfk_2` FOREIGN KEY (`id_pays`) REFERENCES `pays` (`id_pays`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
