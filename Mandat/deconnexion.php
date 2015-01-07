@@ -5,5 +5,9 @@ include(dirname(__FILE__).'/includes/identifiants.php');
 include(dirname(__FILE__).'/includes/header.php');
 include(dirname(__FILE__).'/includes/menu.php');
 
-echo '</div></body></html>';
+?>
+	</div>
+	</body>
+	</html>
+<?php
 ?>

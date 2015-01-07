@@ -10,15 +10,15 @@ include(dirname(__FILE__).'/includes/footer.php');
 if (isset($_SESSION['droit'])) {
 	if ($_SESSION['droit'] == 1) {
 		?>
-			<a href="Scolarite/vue_scolarite.php">Afficher</a>
+			<a href="Scolarite/controleur_scolarite.php">Afficher</a>
 		<?php
 	} else if ($_SESSION['droit'] == 2) {
 		?>
-			<a href="Gestionnaire/vue_gestionnaire.php">Afficher</a>
+			<a href="Gestionnaire/controleur_gestionnaire.php">Afficher</a>
 		<?php
 	} else if ($_SESSION['droit'] == 3) {
 		?>
-			<a href="Admin/vue_admin.php">Afficher</a>
+			<a href="Admin/controleur_admin.php">Afficher</a>
 		<?php
 	} else {
 

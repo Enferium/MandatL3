@@ -9,18 +9,23 @@ include(dirname(__FILE__).'/includes/menu.php');
 <?php
 if (!isset($_POST['pseudo'])) //On est dans la page de formulaire
 {
-	echo '<form method="post" action="connexion.php">
-	<fieldset>
-	<legend>Connexion</legend>
-	<p>
-	<label for="pseudo">Id ENT :</label><input name="pseudo" type="text" id="pseudo" /><br />
-	<label for="password">Mot de Passe :</label><input type="password" name="password" id="password" />
-	</p>
-	</fieldset>
-	<p><input type="submit" value="Connexion" /></p></form>	 
-	</div>
-	</body>
-	</html>';
+	?>
+		<form method="post" action="connexion.php">
+			<fieldset>
+				<legend>Connexion</legend>
+				<p>
+					<label for="pseudo">Id ENT :</label><input name="pseudo" type="text" id="pseudo" /><br />
+					<label for="password">Mot de Passe :</label><input type="password" name="password" id="password" />
+				</p>
+			</fieldset>
+				<p>
+					<input type="submit" value="Connexion" />
+				</p>
+		</form>	 
+		</div>
+		</body>
+		</html>
+	<?php
 }
 else
 {
@@ -51,7 +56,7 @@ else
 	{
 	    $message = '<p>Une erreur s\'est produite 
 	    pendant votre identification.<br /> Le mot de passe ou le pseudo 
-            entré n\'est pas correcte.</p><p>Cliquez <a href="./connexion.php">ici</a> 
+            entré n\'est pas correct.</p><p>Cliquez <a href="./connexion.php">ici</a> 
 	    pour revenir à la page précédente
 	    <br /><br />Cliquez <a href="./index.php">ici</a> 
 	    pour revenir à la page d accueil</p>';
