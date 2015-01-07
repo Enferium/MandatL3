@@ -1,14 +1,9 @@
 <?php
 session_start();
-$titre="Connexion";
-include("includes/identifiants.php");
-include("includes/debut.php");
-include("includes/menu.php");
-?>
+include(dirname(__FILE__).'/includes/identifiants.php');
+include(dirname(__FILE__).'/includes/header.php');
+include(dirname(__FILE__).'/includes/menu.php');
 
-<?php
-echo '<h1>Connexion</h1>';
-if ($id!=0) erreur(ERR_IS_CO);
 ?>
 
 <?php
@@ -18,7 +13,7 @@ if (!isset($_POST['pseudo'])) //On est dans la page de formulaire
 	<fieldset>
 	<legend>Connexion</legend>
 	<p>
-	<label for="pseudo">Pseudo :</label><input name="pseudo" type="text" id="pseudo" /><br />
+	<label for="pseudo">Id ENT :</label><input name="pseudo" type="text" id="pseudo" /><br />
 	<label for="password">Mot de Passe :</label><input type="password" name="password" id="password" />
 	</p>
 	</fieldset>
@@ -38,17 +33,16 @@ else
     }
     else //On check le mot de passe
     {
-        $query=$db->prepare('SELECT membre_mdp, membre_id, membre_rang, membre_pseudo
-        FROM forum_membres WHERE membre_pseudo = :pseudo');
+        $query=$db->prepare('SELECT id_ent, code_droit, mdp
+        FROM droits WHERE id_ent = :pseudo');
         $query->bindValue(':pseudo',$_POST['pseudo'], PDO::PARAM_STR);
         $query->execute();
         $data=$query->fetch();
-	if ($data['membre_mdp'] == md5($_POST['password'])) // Acces OK !
+	if ($data['mdp'] == $_POST['password']) // Acces OK !
 	{
-	    $_SESSION['pseudo'] = $data['membre_pseudo'];
-	    $_SESSION['level'] = $data['membre_rang'];
-	    $_SESSION['id'] = $data['membre_id'];
-	    $message = '<p>Bienvenue '.$data['membre_pseudo'].', 
+	    $_SESSION['pseudo'] = $data['id_ent'];
+	    $_SESSION['droit'] = $data['code_droit'];
+	    $message = '<p>Bienvenue '.$data['id_ent'].', 
 			vous êtes maintenant connecté!</p>
 			<p>Cliquez <a href="./index.php">ici</a> 
 			pour revenir à la page d accueil</p>';  

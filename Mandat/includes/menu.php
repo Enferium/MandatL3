@@ -1,13 +1,18 @@
 <?php
-echo '<body>
+?>
+
+<body>
 <div id="banniere"></div>
 	<div id="menu">        
 		<div class="element_menu">
-			<h3>Accès</h3>
+		<h3><a href="/ProjetTuteureL3/index.php">Gestion des mandats</a></h3>
 				<ul>
-					<li>Page 1</li>
-					<li>Page 2</li>
+					<li><a href="/ProjetTuteureL3/connexion.php">Connexion</a></li>
+					<li><a href="/ProjetTuteureL3/deconnexion.php">Deconnexion</a></li>
 				</ul>
 		</div>              
 </div>
-<div id="body">';
+<div id="body">
+
+<?php
+?>
