@@ -30,4 +30,16 @@ class ControleurAdmin {
     $vue = new Vue("Admin");
     $vue->generer(array('etudiant'=>$etudiant,'pays'=>$pays,'droit'=>$droit,"diplome"=>$diplome));
   }
+
+  public function ajoutEtudiant($param) {
+    $this->etu->ajoutEtudiant($param);
+  }
+
+  public function modifierEtudiant($param) {
+    $this->etu->modifierEtudiant($param);
+  }
+
+  public function supprimerEtudiant($param) {
+    $this->etu->supprimerEtudiant($param);
+  }
 }

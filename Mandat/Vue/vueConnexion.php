@@ -2,19 +2,21 @@
 $this->titre = 'Connexion';
 if (!isset($res)) //On est dans la page de formulaire
 {
-	?><div class="row">
-	<div class="col-md-2 col-md-offset-5">
+	?>
+	<div style="padding-top:70px" class="row">
+	<div class="col-md-4 col-md-offset-4">
 		<form method="post" action="index.php?action=Connexion1" class="well">
 			<legend>Connectez-vous</legend>
 			<div class="form-group">
-				<label for="pseudo">Identifiant:</label>
+				<label for="pseudo" style="width:110px; display: inline-block; text-align:right">Identifiant:</label>
 				<input name="pseudo" type="text" id="pseudo"/>
 			</div>
 			<div class="form-group">
-				<label for="password">Mot de passe:</label>
+				<label for="password" style="width:110px; display: inline-block; text-align:right">Mot de passe:</label>
 				<input type="password" name="password" id="password" />
 			</div>
 			<div class="form-group">
+				<label style="width:110px"></label>
 				<input type="submit" value="Connexion" class="btn btn-primary btn-success"></input>
 			</div>
 		</form>

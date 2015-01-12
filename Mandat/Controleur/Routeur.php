@@ -19,6 +19,18 @@ class Routeur {
       if ($_GET['action'] == 'Admin') {
         $this->ctrlAdmin->admin();
       }
+      elseif ($_GET['action'] == 'ajoutEtudiant') {
+        $this->ctrlAdmin->ajoutEtudiant(array($_POST['nom'], $_POST['prenom'], $_POST['identite_payeur']));
+        header('Location: index.php?action=Admin&tab=etudiant'); 
+      }
+      elseif ($_GET['action'] == 'modifierEtudiant') {
+        $this->ctrlAdmin->modifierEtudiant(array($_POST['nom'], $_POST['prenom'], $_POST['identite_payeur'], $_POST['id']));
+        header('Location: index.php?action=Admin&tab=etudiant'); 
+      }
+      elseif ($_GET['action'] == 'supprimerEtudiant') {
+        $this->ctrlAdmin->supprimerEtudiant(array($_GET['id']));
+        header('Location: index.php?action=Admin&tab=etudiant'); 
+      }
       elseif ($_GET['action'] == 'Gestion') {
         echo "La page de gestion n'est pas implementer";
       }
