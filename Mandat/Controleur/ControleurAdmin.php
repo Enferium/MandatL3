@@ -42,4 +42,40 @@ class ControleurAdmin {
   public function supprimerEtudiant($param) {
     $this->etu->supprimerEtudiant($param);
   }
+
+  public function ajoutPays($param) {
+    $this->pa->ajoutPays($param);
+  }
+
+  public function modifierPays($param) {
+    $this->pa->modifierPays($param);
+  }
+
+  public function supprimerPays($param) {
+    $this->pa->supprimerPays($param);
+  }
+
+  public function ajoutDroit($param) {
+    $this->dr->ajoutDroit($param);
+  }
+
+  public function modifierDroit($param) {
+    $this->dr->modifierDroit($param);
+  }
+
+  public function supprimerDroit($param) {
+    $this->dr->supprimerDroit($param);
+  }
+
+  public function ajoutDiplome($param) {
+    $this->di->ajoutDiplome($param);
+  }
+
+  public function modifierDiplome($param) {
+    $this->di->modifierDiplome($param);
+  }
+
+  public function supprimerDiplome($param) {
+    $this->di->supprimerDiplome($param);
+  }
 }

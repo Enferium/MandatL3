@@ -35,4 +35,20 @@ class ModeleDroits extends Modele{
     return false;
     }
 
+
+    public function ajoutDroit($param) {
+        $sql = 'INSERT INTO droits (id_ent, code_droit, mdp) VALUES (?, ?, ?)';
+        $dr = $this->executerRequete($sql, $param);
+    }
+
+    public function modifierDroit($param) {
+        $sql = 'UPDATE droits SET id_ent=?, code_droit=?, mdp=? WHERE id_droit=? ';
+        $dr = $this->executerRequete($sql, $param);
+    }
+
+    public function supprimerDroit($param) {
+        $sql = 'DELETE FROM droits WHERE id_droit=?';
+        $dr = $this->executerRequete($sql, $param);
+    }
+
 }

@@ -23,4 +23,19 @@ class ModelePays extends Modele{
         else
             throw new Exception("Aucun Pays ne correspond a l'identifiant : '$idPays'");
     }
+
+        public function ajoutPays($param) {
+        $sql = 'INSERT INTO pays (code_pays, alpha2, alpha3, nom_en_gb, nom_fr_fr) VALUES (?, ?, ?, ?, ?)';
+        $pays = $this->executerRequete($sql, $param);
+    }
+
+    public function modifierPays($param) {
+        $sql = 'UPDATE pays SET code_pays=?, alpha2=?, alpha3=?, nom_en_gb=?, nom_fr_fr=? WHERE id_pays=? ';
+        $pays = $this->executerRequete($sql, $param);
+    }
+
+    public function supprimerPays($param) {
+        $sql = 'DELETE FROM pays WHERE id_pays=?';
+        $pays = $this->executerRequete($sql, $param);
+    }
 }

@@ -22,4 +22,19 @@ class ModeleDiplome extends Modele{
         else
             throw new Exception("Aucun diplome ne correspond a l'identifiant : '$idDip'");
     }
+
+    public function ajoutDiplome($param) {
+        $sql = 'INSERT INTO diplome (libele_diplome) VALUES (?)';
+        $di = $this->executerRequete($sql, $param);
+    }
+
+    public function modifierDiplome($param) {
+        $sql = 'UPDATE diplome SET libele_diplome=? WHERE id_diplome=? ';
+        $di = $this->executerRequete($sql, $param);
+    }
+
+    public function supprimerDiplome($param) {
+        $sql = 'DELETE FROM diplome WHERE id_diplome=?';
+        $di = $this->executerRequete($sql, $param);
+    }
 }
