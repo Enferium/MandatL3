@@ -5,6 +5,7 @@
  * Date: 07/01/15
  * Time: 20:02
  */
+require_once dirname(__FILE__).'/Modele.php';
 
 class ModeleDiplome extends Modele{
     public function getDiplomes() {

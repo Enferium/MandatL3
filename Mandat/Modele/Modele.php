@@ -18,8 +18,8 @@ abstract class Modele{
     private function getBdd() {
         if ($this->bdd == null) {
 
-            $this->bdd = new PDO('mysql:host=localhost;dbname=mandat;charset=utf8',
-                'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+            $this->bdd = new PDO('mysql:host=localhost;dbname=mandat-projet;charset=utf8',
+                'mandat-projet', 'mandat', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
         }
         return $this->bdd;
     }

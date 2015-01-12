@@ -5,6 +5,7 @@
  * Date: 07/01/15
  * Time: 19:14
  */
+require_once dirname(__FILE__).'/Modele.php';
 
 class ModeleEtudiant extends Modele {
 
