@@ -1,6 +1,7 @@
 <?php
 require_once dirname(__FILE__).'/ControleurAdmin.php';
 require_once dirname(__FILE__).'/ControleurConnexion.php';
+require_once dirname(__FILE__).'/ControleurScol.php';
 require_once dirname(__FILE__).'/../Vue/Vue.php';
 
 class Routeur {
@@ -11,6 +12,7 @@ class Routeur {
   public function __construct() {
     $this->ctrlAdmin = new ControleurAdmin();
     $this->ctrlConnec = new ControleurConnexion();
+    $this->ctrlScol = new ControleurScol();
   }
 
   // Traite une requête entrante
@@ -67,12 +69,11 @@ class Routeur {
         $this->ctrlAdmin->supprimerDiplome(array($_GET['id']));
         header('Location: index.php?action=Admin&tab=diplome');
       }
-
       elseif ($_GET['action'] == 'Gestion') {
         echo "La page de gestion n'est pas implementer";
       }
       elseif ($_GET['action'] == 'Scol') {
-        echo "La page de scolarité n'est pas implementer";;
+        $this->ctrlScol->scol();
       }
       elseif ($_GET['action'] == 'Connexion') {
         $this->ctrlConnec->connec();

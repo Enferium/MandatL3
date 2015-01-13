@@ -1,7 +1,7 @@
 <?php
 
 $this->titre = "vue Administration";
-if($_SESSION){
+if(isset($_SESSION)){
 	if ($_SESSION['droit'] == 3) {
 		?>
 
