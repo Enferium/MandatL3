@@ -6,6 +6,7 @@ if(isset($_SESSION)){
 		
 		?>
 
+		<h2 class="text-center">Etudiants</h2><br/>
 		<div class="container">
 			<div class="row">
 				<table class="table table-striped" >

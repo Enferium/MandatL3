@@ -16,12 +16,12 @@ if(isset($_SESSION)){
 						<li role="presentation"><a role="menuitem" tabindex="-1" href="?action=Admin&tab=etudiant">Etudiant</a></li>
 						<li role="presentation"><a role="menuitem" tabindex="-1" href="?action=Admin&tab=pays">Pays</a></li>
 						<li role="presentation"><a role="menuitem" tabindex="-1" href="?action=Admin&tab=droit">Droits</a></li>
-						<li role="presentation"><a role="menuitem" tabindex="-1" href="?action=Admin&tab=diplome">Diplome</a></li>
+						<li role="presentation"><a role="menuitem" tabindex="-1" href="?action=Admin&tab=diplome">Diplôme</a></li>
 					</ul>
 				</div>
 			</div>
 		</div>
-
+		<br/>
 
 		<?php
 		
@@ -31,11 +31,11 @@ if(isset($_SESSION)){
 			?>
 			<div class="container">
 				<div class="row">
-					<div class="btn-group" role="group" aria-label="...">
-						<a href="?action=Admin&tab=etudiant&Action2=ajout" class="btn btn-info" role="button">Ajouter</a>
-					</div>
+					<h2 class="text-center">Etudiants</h2>
+					<a href="?action=Admin&tab=etudiant&Action2=ajout" class="btn btn-info" role="button">Ajouter</a>
 				</div>
 			</div>
+			<br/>
 
 			<div class="container">
 				<div class="row">
@@ -104,11 +104,11 @@ if(isset($_SESSION)){
 			?>
 			<div class="container">
 				<div class="row">
-					<div class="btn-group" role="group" aria-label="...">
-						<a href="?action=Admin&tab=pays&Action2=ajout" class="btn btn-info" role="button">Ajouter</a>
-					</div>
+					<h2 class="text-center">Pays</h2>
+					<a href="?action=Admin&tab=pays&Action2=ajout" class="btn btn-info" role="button">Ajouter</a>
 				</div>
 			</div>
+			<br/>
 
 			<div class="container">
 				<div class="row">
@@ -187,11 +187,11 @@ if(isset($_SESSION)){
 			?>
 			<div class="container">
 				<div class="row">
-					<div class="btn-group" role="group" aria-label="...">
-						<a href="?action=Admin&tab=droit&Action2=ajout" class="btn btn-info" role="button">Ajouter</a>
-					</div>
+					<h2 class="text-center">Droits</h2>
+					<a href="?action=Admin&tab=droit&Action2=ajout" class="btn btn-info" role="button">Ajouter</a>
 				</div>
 			</div>
+			<br/>
 
 			<div class="container">
 				<div class="row">
@@ -263,11 +263,11 @@ if(isset($_SESSION)){
 			?>
 			<div class="container">
 				<div class="row">
-					<div class="btn-group" role="group" aria-label="...">
-						<a href="?action=Admin&tab=diplome&Action2=ajout" class="btn btn-info" role="button">Ajouter</a>
-					</div>
+					<h2 class="text-center">Diplômes</h2>
+					<a href="?action=Admin&tab=diplome&Action2=ajout" class="btn btn-info" role="button">Ajouter</a>
 				</div>
 			</div>
+			<br/>
 
 			<div class="container">
 				<div class="row">

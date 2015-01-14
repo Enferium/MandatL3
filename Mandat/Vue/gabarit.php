@@ -7,8 +7,8 @@ if($this->titre != "Connexion"){
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../style.css" rel="stylesheet">
+  <link href="/ProjetTuteureL3/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/ProjetTuteureL3/style.css" rel="stylesheet">
 
   <title><?= $titre ?></title>   <!-- Élément spécifique -->
   <?php
