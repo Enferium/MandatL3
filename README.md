@@ -4,6 +4,6 @@
 
 
 
-Repertory which contains a clone of [mandat-projet.tk](mandat-projet.tk).
+Repertory which contains a clone of [mandat-projet.tk](http://mandat-projet.tk).
 
 University of Franche Comté | Besançon, France
