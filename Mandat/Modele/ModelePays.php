@@ -9,10 +9,21 @@ require_once dirname(__FILE__).'/Modele.php';
 
 class ModelePays extends Modele{
 
-    public function getCountry() {
-        $sql = 'SELECT * FROM pays';
+    public function getCountry($a,$b) {
+        $sql = 'SELECT * FROM pays ORDER BY `pays`.`nom_fr_fr` ASC LIMIT '.$a.', '.$b.'';
         $pays = $this->executerRequete($sql);
         return $pays;
+    }
+
+    
+    public function getNbPages() {
+        $messagesParPage = 10;
+        $sql = 'SELECT COUNT(*) AS total FROM pays';
+        $res=$this->executerRequete($sql);
+        $donnees_total=$res->fetch(PDO::FETCH_ASSOC);
+        $total=$donnees_total['total'];
+        $nombreDePages=ceil($total/$messagesParPage);
+        return $nombreDePages;
     }
 
     public function getPays($idPays) {

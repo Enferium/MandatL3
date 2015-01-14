@@ -8,10 +8,20 @@
 require_once dirname(__FILE__).'/Modele.php';
 
 class ModeleDiplome extends Modele{
-    public function getDiplomes() {
-        $sql = 'SELECT * FROM diplome';
+    public function getDiplomes($a, $b) {
+        $sql = 'SELECT * FROM diplome ORDER BY `diplome`.`libele_diplome` ASC LIMIT '.$a.', '.$b.'';
         $dip = $this->executerRequete($sql);
         return $dip;
+    }
+
+    public function getNbPages() {
+        $messagesParPage = 10;
+        $sql = 'SELECT COUNT(*) AS total FROM diplome';
+        $res=$this->executerRequete($sql);
+        $donnees_total=$res->fetch(PDO::FETCH_ASSOC);
+        $total=$donnees_total['total'];
+        $nombreDePages=ceil($total/$messagesParPage);
+        return $nombreDePages;
     }
 
     public function getDiplome($idDip) {

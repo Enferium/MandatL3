@@ -8,10 +8,20 @@
 require_once dirname(__FILE__).'/Modele.php';
 
 class ModeleDroits extends Modele{
-    public function getDroits() {
-        $sql = 'SELECT * FROM droits';
+    public function getDroits($a, $b) {
+        $sql = 'SELECT * FROM droits ORDER BY `droits`.`id_ent` ASC LIMIT '.$a.', '.$b.'';
         $droit = $this->executerRequete($sql);
         return $droit;
+    }
+
+    public function getNbPages() {
+        $messagesParPage = 10;
+        $sql = 'SELECT COUNT(*) AS total FROM etudiant';
+        $res=$this->executerRequete($sql);
+        $donnees_total=$res->fetch(PDO::FETCH_ASSOC);
+        $total=$donnees_total['total'];
+        $nombreDePages=ceil($total/$messagesParPage);
+        return $nombreDePages;
     }
 
     public function getDroit($idEnt) {

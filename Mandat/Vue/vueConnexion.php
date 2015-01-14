@@ -34,7 +34,7 @@ else
 
 		$_SESSION['pseudo'] = $res->id_ent;
 		$_SESSION['droit'] = $res->code_droit;
-		if($_SESSION['droit']==3) header('Location: index.php?action=Admin');
+		if($_SESSION['droit']==3) header('Location: index.php?action=Admin&page=1');
 		elseif ($_SESSION['droit']==2)header('Location: index.php?action=Gestion');
 		elseif ($_SESSION['droit']==1)header('Location: index.php?action=Scol');
 		exit();

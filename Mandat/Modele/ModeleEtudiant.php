@@ -10,10 +10,20 @@ require_once dirname(__FILE__).'/Modele.php';
 class ModeleEtudiant extends Modele {
 
 
-    public function getEtudiants() {
-        $sql = 'SELECT * FROM etudiant ORDER BY `etudiant`.`nom` ASC';
+    public function getEtudiants($a, $b) {
+        $sql = 'SELECT * FROM etudiant ORDER BY `etudiant`.`nom` ASC LIMIT '.$a.', '.$b.'';
         $etu = $this->executerRequete($sql);
         return $etu;
+    }
+
+    public function getNbPages() {
+        $messagesParPage = 10;
+        $sql = 'SELECT COUNT(*) AS total FROM etudiant';
+        $res=$this->executerRequete($sql);
+        $donnees_total=$res->fetch(PDO::FETCH_ASSOC);
+        $total=$donnees_total['total'];
+        $nombreDePages=ceil($total/$messagesParPage);
+        return $nombreDePages;
     }
 
     public function getEtudiant($idEtu) {

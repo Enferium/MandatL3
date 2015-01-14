@@ -22,13 +22,18 @@ class ControleurAdmin {
   }
 
 
-  public function admin() {
-    $etudiant = $this->etu->getEtudiants();
-    $pays = $this->pa->getCountry();
-    $droit = $this->dr->getDroits();
-    $diplome = $this->di->getDiplomes();
+  public function admin($a,$b) {
+    $nb_pa = $this->pa->getNbPages();
+    $nb_di = $this->di->getNbPages();
+    $nb_etu = $this->etu->getNbPages();
+    $nb_dr = $this->dr->getNbPages();
+
+    $etudiant = $this->etu->getEtudiants($a, $b);
+    $pays = $this->pa->getCountry($a,$b);
+    $droit = $this->dr->getDroits($a, $b);
+    $diplome = $this->di->getDiplomes($a, $b);
     $vue = new Vue("Admin");
-    $vue->generer(array('etudiant'=>$etudiant,'pays'=>$pays,'droit'=>$droit,"diplome"=>$diplome));
+    $vue->generer(array('etudiant'=>$etudiant,'pays'=>$pays,'droit'=>$droit,"diplome"=>$diplome, "nb_pa"=>$nb_pa, "nb_di"=>$nb_di, "nb_etu"=>$nb_etu, "nb_dr"=>$nb_dr));
   }
 
   public function ajoutEtudiant($param) {
