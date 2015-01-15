@@ -21,7 +21,7 @@ class ControleurConnexion {
 
     public function connecM($res) {
 
-    $droit = $this->dr->getDroits();
+    $droit = $this->dr->getDroits(1,1);
     $vue = new Vue("Connexion");
     $vue->generer(array('res'=>$res));
   }

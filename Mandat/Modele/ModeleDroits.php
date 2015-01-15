@@ -16,7 +16,7 @@ class ModeleDroits extends Modele{
 
     public function getNbPages() {
         $messagesParPage = 10;
-        $sql = 'SELECT COUNT(*) AS total FROM etudiant';
+        $sql = 'SELECT COUNT(*) AS total FROM droits';
         $res=$this->executerRequete($sql);
         $donnees_total=$res->fetch(PDO::FETCH_ASSOC);
         $total=$donnees_total['total'];
