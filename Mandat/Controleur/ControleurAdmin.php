@@ -28,12 +28,15 @@ class ControleurAdmin {
     $nb_etu = $this->etu->getNbPages();
     $nb_dr = $this->dr->getNbPages();
 
+    $select_pays = $this->pa->getPaysPourSelect();
+    $select_diplome = $this->di->getDiplomePourSelect();
+
     $etudiant = $this->etu->getEtudiants($a, $b);
     $pays = $this->pa->getCountry($a,$b);
     $droit = $this->dr->getDroits($a, $b);
     $diplome = $this->di->getDiplomes($a, $b);
     $vue = new Vue("Admin");
-    $vue->generer(array('etudiant'=>$etudiant,'pays'=>$pays,'droit'=>$droit,"diplome"=>$diplome, "nb_pa"=>$nb_pa, "nb_di"=>$nb_di, "nb_etu"=>$nb_etu, "nb_dr"=>$nb_dr));
+    $vue->generer(array('etudiant'=>$etudiant,'pays'=>$pays,'droit'=>$droit,"diplome"=>$diplome, "nb_pa"=>$nb_pa, "nb_di"=>$nb_di, "nb_etu"=>$nb_etu, "nb_dr"=>$nb_dr, "select_pays"=>$select_pays, "select_diplome"=>$select_diplome));
   }
 
   public function ajoutEtudiant($param) {

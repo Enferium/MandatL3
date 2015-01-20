@@ -15,6 +15,11 @@ class ModelePays extends Modele{
         return $pays;
     }
 
+    public function getPaysPourSelect() {
+        $sql = 'SELECT * FROM pays ORDER BY `pays`.`nom_fr_fr`';
+        $pays = $this->executerRequete($sql);
+        return $pays;
+    }
     
     public function getNbPages() {
         $messagesParPage = 10;

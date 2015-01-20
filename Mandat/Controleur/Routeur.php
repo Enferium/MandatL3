@@ -21,11 +21,11 @@ class Routeur {
       if(isset($_SESSION['droit'])){
         if($_SESSION['droit'] == 3){
           if ($_GET['action'] == 'ajoutEtudiant') {
-            $this->ctrlAdmin->ajoutEtudiant(array($_POST['nom'], $_POST['prenom'], $_POST['identite_payeur']));
+            $this->ctrlAdmin->ajoutEtudiant(array($_POST['nom'], $_POST['prenom'], $_POST['identite_payeur'], $_POST['libele_diplome'], $_POST['nom_fr_fr']));
             header('Location: index.php?action=Admin&tab=etudiant&page='.$_GET['page'].''); 
           }
           elseif ($_GET['action'] == 'modifierEtudiant') {
-            $this->ctrlAdmin->modifierEtudiant(array($_POST['nom'], $_POST['prenom'], $_POST['identite_payeur'], $_POST['id']));
+            $this->ctrlAdmin->modifierEtudiant(array($_POST['id'], $_POST['nom'], $_POST['prenom'], $_POST['identite_payeur'], $_POST['libele_diplome'], $_POST['nom_fr_fr']));
             header('Location: index.php?action=Admin&tab=etudiant&page='.$_GET['page'].'');
           }
           elseif ($_GET['action'] == 'supprimerEtudiant') {
@@ -68,6 +68,11 @@ class Routeur {
             $this->ctrlAdmin->supprimerDiplome(array($_GET['id']));
             header('Location: index.php?action=Admin&tab=diplome&page='.$_GET['page'].'');
           }
+        } elseif ($_SESSION['droit'] == 1) {
+          if ($_GET['action'] == 'ajoutEtudiant') {
+            $this->ctrlScol->ajoutEtudiant(array($_POST['nom'], $_POST['prenom'], $_POST['identite_payeur'], $_POST['libele_diplome'], $_POST['nom_fr_fr']));
+            header('Location: index.php?action=Scol&page='.$_GET['page'].'');
+          }
         }
       }
       if ($_GET['action'] == 'Admin') {
@@ -77,7 +82,7 @@ class Routeur {
         echo "La page de gestion n'est pas implementer";
       }
       elseif ($_GET['action'] == 'Scol') {
-        $this->ctrlScol->scol();
+        $this->ctrlScol->scol((($_GET['page']-1)*10),10);
       }
       elseif ($_GET['action'] == 'Connexion') {
         $this->ctrlConnec->connec();

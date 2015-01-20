@@ -14,6 +14,12 @@ class ModeleDiplome extends Modele{
         return $dip;
     }
 
+    public function getDiplomePourSelect() {
+        $sql = 'SELECT * FROM diplome ORDER BY `diplome`.`libele_diplome`';
+        $dip = $this->executerRequete($sql);
+        return $dip;
+    }
+
     public function getNbPages() {
         $messagesParPage = 10;
         $sql = 'SELECT COUNT(*) AS total FROM diplome';

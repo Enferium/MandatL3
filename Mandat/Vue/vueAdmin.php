@@ -52,6 +52,8 @@ if(isset($_SESSION)){
 							<th>Nom</th>
 							<th>Prenom</th>
 							<th>Identité Payeur</th>
+							<th>Pays</th>
+							<th>Diplôme</th>
 							<th>Action</th>
 						</tr>	
 						<?php
@@ -64,13 +66,33 @@ if(isset($_SESSION)){
 										<input value="',$rec->id_etudiant,'" name="id" type="hidden" id="id" />
 										<td><input value="',$rec->nom,'" name="nom" type="text" id="nom" /></td>
 										<td><input value="',$rec->prenom,'" name="prenom" type="text" id="prenom" /></td>	
-										<td><input value="',$rec->identite_payeur,'" name="identite_payeur" type="text" id="identite_payeur" /></td>
-										<td><input type="submit" value="Modifier" class="btn btn-xs btn-primary btn-success" /></td>
+										<td><input value="',$rec->identite_payeur,'" name="identite_payeur" type="text" id="identite_payeur" /></td>';
+										echo "<td><select name='nom_fr_fr' id='nom_fr_fr'>";
+				        					while ($row = $select_pays->fetch(PDO::FETCH_OBJ)) {
+				        						if ($rec->nom_fr_fr == $row->nom_fr_fr) {
+				        							echo "<option selected='selected'>$row->nom_fr_fr</option>";
+				        						} else {
+				         							echo "<option>$row->nom_fr_fr</option>";
+				         						} 
+				         					} 
+				     					echo "</select></td>";
+										echo "<td><select name='libele_diplome' id='libele_diplome'>";
+				        					while ($row = $select_diplome->fetch(PDO::FETCH_OBJ)) { 
+				         						if ($rec->libele_diplome == $row->libele_diplome) {
+				        							echo "<option selected='selected'>$row->libele_diplome</option>";
+				        						} else {
+				         							echo "<option>$row->libele_diplome</option>";
+				         						}  
+				         					} 
+				     					echo "</select></td>";	
+										echo '<td><input type="submit" value="Modifier" class="btn btn-xs btn-primary btn-success" /></td>
 									</form>';
 									}else{
 										echo '<td>',$rec->nom,'</td>
 										<td>',$rec->prenom,'</td>
 										<td>',$rec->identite_payeur,'</td>
+										<td>',$rec->nom_fr_fr,'</td>
+										<td>',$rec->libele_diplome,'</td>
 										<td><a href="index.php?action=Admin&tab=etudiant&page=',$_GET['page'],'&Action2=modifierEtudiant&id=',$rec->id_etudiant,'" class="btn btn-xs btn-warning" role="button">Modifier</a>
 											<a href="index.php?action=supprimerEtudiant&page=',$_GET['page'],'&id=',$rec->id_etudiant,'" class="btn btn-xs btn-danger" role="button">Supprimer</a>
 										</td>
@@ -80,6 +102,8 @@ if(isset($_SESSION)){
 									echo '<td>',$rec->nom,'</td>
 										<td>',$rec->prenom,'</td>
 										<td>',$rec->identite_payeur,'</td>
+										<td>',$rec->nom_fr_fr,'</td>
+										<td>',$rec->libele_diplome,'</td>
 										<td><a href="index.php?action=Admin&tab=etudiant&page=',$_GET['page'],'&Action2=modifierEtudiant&id=',$rec->id_etudiant,'" class="btn btn-xs btn-warning" role="button">Modifier</a>
 											<a href="index.php?action=supprimerEtudiant&page=',$_GET['page'],'&id=',$rec->id_etudiant,'" class="btn btn-xs btn-danger" role="button">Supprimer</a>
 										</td>
@@ -94,6 +118,18 @@ if(isset($_SESSION)){
 									<td><input name="nom" type="text" id="nom" /></td>
 									<td><input name="prenom" type="text" id="prenom" /></td>	
 									<td><input name="identite_payeur" type="text" id="identite_payeur" /></td>
+									<?php
+										echo "<td><select name='nom_fr_fr' id='nom_fr_fr'>";
+				        					while ($row = $select_pays->fetch(PDO::FETCH_OBJ)) { 
+				         						echo "<option>$row->nom_fr_fr</option>"; 
+				         					} 
+				     					echo "</select></td>";
+										echo "<td><select name='libele_diplome' id='libele_diplome'>";
+				        					while ($row = $select_diplome->fetch(PDO::FETCH_OBJ)) { 
+				         						echo "<option>$row->libele_diplome</option>"; 
+				         					} 
+				     					echo "</select></td>";
+									?>
 									<td><input type="submit" value="Ajouter" class="btn btn-xs btn-primary btn-success" /></td>
 								</tr>
 							</form>

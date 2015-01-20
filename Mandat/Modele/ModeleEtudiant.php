@@ -11,7 +11,7 @@ class ModeleEtudiant extends Modele {
 
 
     public function getEtudiants($a, $b) {
-        $sql = 'SELECT * FROM etudiant ORDER BY `etudiant`.`nom` ASC LIMIT '.$a.', '.$b.'';
+        $sql = 'SELECT etudiant.nom, etudiant.prenom, etudiant.identite_payeur, pays.nom_fr_fr, diplome.libele_diplome, etudiant.id_etudiant FROM diplome, pays, etudiant, est_en, est_originaire_de WHERE diplome.id_diplome = est_en.id_diplome AND etudiant.id_etudiant = est_en.id_etudiant AND pays.id_pays = est_originaire_de.id_pays AND etudiant.id_etudiant = est_originaire_de.id_etudiant  ORDER BY `etudiant`.`nom` ASC LIMIT '.$a.', '.$b.'';
         $etu = $this->executerRequete($sql);
         return $etu;
     }
@@ -36,12 +36,13 @@ class ModeleEtudiant extends Modele {
     }
 
     public function ajoutEtudiant($param) {
-        $sql = 'INSERT INTO etudiant (nom, prenom, identite_payeur) VALUES (?, ?, ?)';
+        $sql = "CALL ajoutEtudiant(?, ?, ?, ?, ?)";
         $etu = $this->executerRequete($sql, $param);
+        return $etu;
     }
 
     public function modifierEtudiant($param) {
-        $sql = 'UPDATE etudiant SET nom=?, prenom=?, identite_payeur=? WHERE id_etudiant=? ';
+        $sql = "CALL modifierEtudiant(?, ?, ?, ?, ?, ?)";
         $etu = $this->executerRequete($sql, $param);
     }
 
