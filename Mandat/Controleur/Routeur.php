@@ -3,6 +3,7 @@ require_once dirname(__FILE__).'/ControleurAdmin.php';
 require_once dirname(__FILE__).'/ControleurConnexion.php';
 require_once dirname(__FILE__).'/ControleurScol.php';
 require_once dirname(__FILE__).'/../Vue/Vue.php';
+require_once dirname(__FILE__).'/ControleurRecepisse.php';
 
 class Routeur {
 
@@ -13,6 +14,7 @@ class Routeur {
     $this->ctrlAdmin = new ControleurAdmin();
     $this->ctrlConnec = new ControleurConnexion();
     $this->ctrlScol = new ControleurScol();
+    $this->ctrlRece = new ControleurRecepisse();
   }
 
   // Traite une requête entrante
@@ -73,17 +75,29 @@ class Routeur {
             $this->ctrlScol->ajoutEtudiant(array($_POST['nom'], $_POST['prenom'], $_POST['identite_payeur'], $_POST['libele_diplome'], $_POST['nom_fr_fr']));
             header('Location: index.php?action=Scol&page='.$_GET['page'].'');
           }
+          elseif ($_GET['action']=='ajoutRecepisse'){
+            $this->ctrlRece->ajoutRecepisse(array($_GET['id'],$_GET['fichier']));
+            header('Location: index.php?action=Scol&page=1');
+          }
+          elseif ($_GET['action']=='supprimerRecepisse'){
+            $this->ctrlRece->supprimerRecepisse(array($_GET['id']));
+            unlink('../recepisse/'.$_GET['fichier']);
+            header('Location: index.php?action=Scol&page=1');
+          }
         }
       }
       if ($_GET['action'] == 'Admin') {
         $this->ctrlAdmin->admin((($_GET['page']-1)*10),10);
       }
       elseif ($_GET['action'] == 'Gestion') {
-        echo "La page de gestion n'est pas implementer";
+        echo "La page de gestion n'est pas implementée";
       }
       elseif ($_GET['action'] == 'Scol') {
         $this->ctrlScol->scol((($_GET['page']-1)*10),10);
       }
+      elseif ($_GET['action'] == 'Rece') {
+            $this->ctrlRece->rece(array($_GET['id']));
+          }
       elseif ($_GET['action'] == 'Connexion') {
         $this->ctrlConnec->connec();
       }

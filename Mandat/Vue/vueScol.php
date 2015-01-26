@@ -46,8 +46,10 @@ if(isset($_SESSION)){
 										<td>',$rec->identite_payeur,'</td>
 										<td>',$rec->nom_fr_fr,'</td>
 										<td>',$rec->libele_diplome,'</td>
-										<td></td>
-										<td><button type="button" class="btn btn-xs btn-success" disabled="disabled">Ajouter</button></td>
+										<td>
+											<a href="/ProjetTuteureL3/index.php?action=Rece&id=',$rec->id_etudiant,'" data-target="#myModal" data-toggle="modal">Voir</a>
+										</td>
+										<td><button href="/ProjetTuteureL3/index.php" type="button" class="btn btn-xs btn-success" disabled="disabled">Ajouter</button></td>
 							</tr>';
 						}
 					if (isset($_GET['Action2'])) {
@@ -96,7 +98,27 @@ if(isset($_SESSION)){
 		</div>
 	</div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Récipissé</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 	<?php
+
 
 } else {
 	?>

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.14
+-- version 4.3.2
 -- http://www.phpmyadmin.net
 --
--- Client :  127.0.0.1
--- Généré le :  Mer 07 Janvier 2015 à 19:09
--- Version du serveur :  5.6.17
--- Version de PHP :  5.5.12
+-- Client :  localhost
+-- Généré le :  Lun 26 Janvier 2015 à 11:29
+-- Version du serveur :  5.5.40-0+wheezy1
+-- Version de PHP :  5.4.35-0+deb7u2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,20 +17,54 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de données :  `mandat`
+-- Base de données :  `mandat-projet`
 --
+
+DELIMITER $$
+--
+-- Procédures
+--
+CREATE DEFINER=`mandat-projet`@`%` PROCEDURE `ajoutEtudiant`(IN `p_nom` VARCHAR(60), IN `p_prenom` VARCHAR(60), IN `p_identite_payeur` VARCHAR(60), IN `p_libele` VARCHAR(60), IN `p_pays` VARCHAR(60))
+    MODIFIES SQL DATA
+BEGIN
+	DECLARE d_id_etudiant int;
+	DECLARE d_id_diplome int;
+    DECLARE d_id_pays int;
+
+	INSERT INTO etudiant (nom, prenom, identite_payeur) VALUES (p_nom, p_prenom, p_identite_payeur);
+    SET d_id_etudiant = LAST_INSERT_ID();
+    SELECT id_diplome INTO d_id_diplome FROM diplome WHERE libele_diplome = p_libele;
+    SELECT id_pays INTO d_id_pays FROM pays WHERE nom_fr_fr = p_pays;
+    
+    INSERT INTO est_en (id_etudiant, id_diplome) VALUES (d_id_etudiant, d_id_diplome);
+    INSERT INTO est_originaire_de (id_etudiant, id_pays) VALUES (d_id_etudiant, d_id_pays);
+
+END$$
+
+CREATE DEFINER=`mandat-projet`@`%` PROCEDURE `modifierEtudiant`(IN `p_id` INT(11), IN `p_nom` VARCHAR(60), IN `p_prenom` VARCHAR(60), IN `p_identite` VARCHAR(60), IN `p_libele` VARCHAR(60), IN `p_pays` VARCHAR(60))
+    MODIFIES SQL DATA
+BEGIN
+	DECLARE d_id_diplome int;
+    DECLARE d_id_pays int;
+
+	UPDATE etudiant SET nom = p_nom, prenom = p_prenom, identite_payeur = p_identite WHERE id_etudiant = p_id;
+    SELECT id_diplome INTO d_id_diplome FROM diplome WHERE libele_diplome = p_libele;
+    SELECT id_pays  INTO d_id_pays FROM pays WHERE nom_fr_fr = p_pays;
+    UPDATE est_en SET id_diplome = d_id_diplome WHERE id_etudiant = p_id;
+    UPDATE est_originaire_de SET id_pays = d_id_pays WHERE id_etudiant = p_id;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `a fait`
+-- Structure de la table `a_fait`
 --
 
-CREATE TABLE IF NOT EXISTS `a fait` (
+CREATE TABLE IF NOT EXISTS `a_fait` (
   `id_etudiant` int(11) NOT NULL,
-  `id_paiement` int(11) NOT NULL,
-  UNIQUE KEY `id_etudiant` (`id_etudiant`,`id_paiement`),
-  KEY `id_paiement` (`id_paiement`)
+  `id_paiement` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -50,10 +84,9 @@ CREATE TABLE IF NOT EXISTS `date` (
 --
 
 CREATE TABLE IF NOT EXISTS `diplome` (
-  `id_diplome` int(11) NOT NULL AUTO_INCREMENT,
-  `libele_diplome` varchar(60) NOT NULL,
-  PRIMARY KEY (`id_diplome`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
+  `id_diplome` int(11) NOT NULL,
+  `libele_diplome` varchar(60) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `diplome`
@@ -75,7 +108,6 @@ INSERT INTO `diplome` (`id_diplome`, `libele_diplome`) VALUES
 (13, 'L1 HISTOIRE'),
 (14, 'L2 HISTOIRE'),
 (15, 'L3 HISTOIRE'),
-(16, 'M1 HISTOIRE'),
 (17, 'M2 HISTOIRE'),
 (18, 'L3 INFORMATIQUE'),
 (19, 'M1 DVL'),
@@ -89,8 +121,9 @@ INSERT INTO `diplome` (`id_diplome`, `libele_diplome`) VALUES
 (27, 'L3 MATHEMATIQUES'),
 (28, 'M1 MATHEMATIQUES'),
 (29, 'M2 MATHEMATIQUES'),
-(30, 'M1 ENSEIGNEMENT MATHEMATIQUES'),
-(31, 'M2 ENSEIGNEMENT MATHEMATIQUES');
+(30, 'M1 ENS MATHEMATIQUES'),
+(31, 'M2 ENS MATHEMATIQUES'),
+(32, 'M1 HISTOIRE');
 
 -- --------------------------------------------------------
 
@@ -99,89 +132,82 @@ INSERT INTO `diplome` (`id_diplome`, `libele_diplome`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `droits` (
+  `id_droit` int(11) NOT NULL,
   `id_ent` varchar(24) NOT NULL,
   `code_droit` int(11) NOT NULL,
   `mdp` varchar(32) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `droits`
 --
 
-INSERT INTO `droits` (`id_ent`, `code_droit`, `mdp`) VALUES
-('twesterm', 3, 'toto');
+INSERT INTO `droits` (`id_droit`, `id_ent`, `code_droit`, `mdp`) VALUES
+(1, 'twesterm', 3, 'toto'),
+(2, 'mbriland', 2, 'toto'),
+(4, 'bcrivell', 1, 'toto');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `est de type`
+-- Structure de la table `est_de_type`
 --
 
-CREATE TABLE IF NOT EXISTS `est de type` (
+CREATE TABLE IF NOT EXISTS `est_de_type` (
   `id_paiement` int(11) NOT NULL,
-  `id_type_paiement` int(11) NOT NULL,
-  KEY `id_paiement` (`id_paiement`),
-  KEY `id_type_paiement` (`id_type_paiement`)
+  `id_type_paiement` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `est en`
+-- Structure de la table `est_en`
 --
 
-CREATE TABLE IF NOT EXISTS `est en` (
+CREATE TABLE IF NOT EXISTS `est_en` (
   `id_etudiant` int(11) NOT NULL,
-  `id_diplome` int(11) NOT NULL,
-  KEY `id_etudiant` (`id_etudiant`),
-  KEY `id_diplome` (`id_diplome`)
+  `id_diplome` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `est en`
+-- Contenu de la table `est_en`
 --
 
-INSERT INTO `est en` (`id_etudiant`, `id_diplome`) VALUES
+INSERT INTO `est_en` (`id_etudiant`, `id_diplome`) VALUES
 (1, 18),
 (2, 18),
-(3, 18),
-(4, 18);
+(23, 13);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `est en situation de`
+-- Structure de la table `est_en_situation_de`
 --
 
-CREATE TABLE IF NOT EXISTS `est en situation de` (
+CREATE TABLE IF NOT EXISTS `est_en_situation_de` (
   `id_etat` int(11) NOT NULL,
   `date_etat` date NOT NULL,
-  `id_paiement` int(11) NOT NULL,
-  KEY `id_etat` (`id_etat`),
-  KEY `date_etat` (`date_etat`),
-  KEY `id_paiement` (`id_paiement`)
+  `id_paiement` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `est originaire de`
+-- Structure de la table `est_originaire_de`
 --
 
-CREATE TABLE IF NOT EXISTS `est originaire de` (
+CREATE TABLE IF NOT EXISTS `est_originaire_de` (
   `id_etudiant` int(11) NOT NULL,
-  `id_pays` int(11) NOT NULL,
-  KEY `id_etudiant` (`id_etudiant`),
-  KEY `id_pays` (`id_pays`)
+  `id_pays` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `est originaire de`
+-- Contenu de la table `est_originaire_de`
 --
 
-INSERT INTO `est originaire de` (`id_etudiant`, `id_pays`) VALUES
+INSERT INTO `est_originaire_de` (`id_etudiant`, `id_pays`) VALUES
 (1, 5),
-(4, 3);
+(23, 144);
 
 -- --------------------------------------------------------
 
@@ -190,10 +216,9 @@ INSERT INTO `est originaire de` (`id_etudiant`, `id_pays`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `etat` (
-  `id_etat` int(11) NOT NULL AUTO_INCREMENT,
-  `libelle_etat` varchar(60) NOT NULL,
-  PRIMARY KEY (`id_etat`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+  `id_etat` int(11) NOT NULL,
+  `libelle_etat` varchar(60) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `etat`
@@ -211,23 +236,24 @@ INSERT INTO `etat` (`id_etat`, `libelle_etat`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `etudiant` (
-  `id_etudiant` int(11) NOT NULL AUTO_INCREMENT,
+  `id_etudiant` int(11) NOT NULL,
   `prenom` varchar(60) NOT NULL,
   `nom` varchar(60) NOT NULL,
-  `identite_payeur` varchar(62) NOT NULL,
-  PRIMARY KEY (`id_etudiant`),
-  KEY `prenom` (`prenom`,`nom`,`identite_payeur`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+  `identite_payeur` varchar(62) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `etudiant`
 --
 
 INSERT INTO `etudiant` (`id_etudiant`, `prenom`, `nom`, `identite_payeur`) VALUES
-(3, 'Benoit', 'Crivelli', 'Benoit Crivelli'),
-(4, 'Elodie', 'Bernard', 'Elodie Bernard'),
+(5, 'Benoit', 'Crivelli', 'Benoit Crivelli'),
+(6, 'Elodie', 'Bernard', 'Elodie Bernard'),
+(23, 'Hakem', 'Mourad', 'Thomas Westermann'),
 (2, 'Mathieu', 'Briland', 'Mathieu Briland'),
-(1, 'Thomas', 'Westermann', 'Thomas Westermann');
+(21, 'o', 'tot', 'oo'),
+(1, 'Thomas', 'Westermann', 'Thomas Westermann'),
+(22, 'toto', 'toto', 'toto');
 
 -- --------------------------------------------------------
 
@@ -236,10 +262,10 @@ INSERT INTO `etudiant` (`id_etudiant`, `prenom`, `nom`, `identite_payeur`) VALUE
 --
 
 CREATE TABLE IF NOT EXISTS `paiement` (
-  `id_paiement` int(11) NOT NULL AUTO_INCREMENT,
+  `id_paiement` int(11) NOT NULL,
   `libelle_paiement` varchar(60) NOT NULL,
-  PRIMARY KEY (`id_paiement`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `emetteur_virement` varchar(60) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -248,14 +274,13 @@ CREATE TABLE IF NOT EXISTS `paiement` (
 --
 
 CREATE TABLE IF NOT EXISTS `pays` (
-  `id_pays` int(11) NOT NULL AUTO_INCREMENT,
+  `id_pays` int(11) NOT NULL,
   `code_pays` int(3) NOT NULL,
   `alpha2` varchar(2) NOT NULL,
   `alpha3` varchar(3) NOT NULL,
   `nom_en_gb` varchar(45) NOT NULL,
-  `nom_fr_fr` varchar(45) NOT NULL,
-  PRIMARY KEY (`id_pays`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=242 ;
+  `nom_fr_fr` varchar(45) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=242 DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `pays`
@@ -263,7 +288,7 @@ CREATE TABLE IF NOT EXISTS `pays` (
 
 INSERT INTO `pays` (`id_pays`, `code_pays`, `alpha2`, `alpha3`, `nom_en_gb`, `nom_fr_fr`) VALUES
 (1, 4, 'AF', 'AFG', 'Afghanistan', 'Afghanistan'),
-(2, 8, 'AL', 'ALB', 'Albania', 'Albanie'),
+(2, 8, 'AL', 'ALB', 'Albania', 'Albania'),
 (3, 10, 'AQ', 'ATA', 'Antarctica', 'Antarctique'),
 (4, 12, 'DZ', 'DZA', 'Algeria', 'Algérie'),
 (5, 16, 'AS', 'ASM', 'American Samoa', 'Samoa Américaines'),
@@ -294,7 +319,7 @@ INSERT INTO `pays` (`id_pays`, `code_pays`, `alpha2`, `alpha3`, `nom_en_gb`, `no
 (30, 96, 'BN', 'BRN', 'Brunei Darussalam', 'Brunéi Darussalam'),
 (31, 100, 'BG', 'BGR', 'Bulgaria', 'Bulgarie'),
 (32, 104, 'MM', 'MMR', 'Myanmar', 'Myanmar'),
-(33, 108, 'BI', 'BDI', 'Burundi', 'Burundi'),
+(33, 108, 'BI', 'BDI', 'Burundi', 'Burundie'),
 (34, 112, 'BY', 'BLR', 'Belarus', 'Bélarus'),
 (35, 116, 'KH', 'KHM', 'Cambodia', 'Cambodge'),
 (36, 120, 'CM', 'CMR', 'Cameroon', 'Cameroun'),
@@ -507,52 +532,196 @@ INSERT INTO `pays` (`id_pays`, `code_pays`, `alpha2`, `alpha3`, `nom_en_gb`, `no
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `recepisse`
+--
+
+CREATE TABLE IF NOT EXISTS `recepisse` (
+  `id_recepisse` int(11) NOT NULL,
+  `id_etudiant` int(11) NOT NULL,
+  `chemin` varchar(256) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `recepisse`
+--
+
+INSERT INTO `recepisse` (`id_recepisse`, `id_etudiant`, `chemin`) VALUES
+(2, 21, 'images2.png');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `type_paiement`
 --
 
 CREATE TABLE IF NOT EXISTS `type_paiement` (
-  `id_type_paiement` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id_type_paiement`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `id_type_paiement` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Index pour les tables exportées
+--
+
+--
+-- Index pour la table `a_fait`
+--
+ALTER TABLE `a_fait`
+  ADD UNIQUE KEY `id_etudiant` (`id_etudiant`,`id_paiement`), ADD KEY `id_paiement` (`id_paiement`);
+
+--
+-- Index pour la table `diplome`
+--
+ALTER TABLE `diplome`
+  ADD PRIMARY KEY (`id_diplome`);
+
+--
+-- Index pour la table `droits`
+--
+ALTER TABLE `droits`
+  ADD PRIMARY KEY (`id_droit`);
+
+--
+-- Index pour la table `est_de_type`
+--
+ALTER TABLE `est_de_type`
+  ADD KEY `id_paiement` (`id_paiement`), ADD KEY `id_type_paiement` (`id_type_paiement`);
+
+--
+-- Index pour la table `est_en`
+--
+ALTER TABLE `est_en`
+  ADD KEY `id_etudiant` (`id_etudiant`), ADD KEY `id_diplome` (`id_diplome`);
+
+--
+-- Index pour la table `est_en_situation_de`
+--
+ALTER TABLE `est_en_situation_de`
+  ADD KEY `id_etat` (`id_etat`), ADD KEY `date_etat` (`date_etat`), ADD KEY `id_paiement` (`id_paiement`);
+
+--
+-- Index pour la table `est_originaire_de`
+--
+ALTER TABLE `est_originaire_de`
+  ADD KEY `id_etudiant` (`id_etudiant`), ADD KEY `id_pays` (`id_pays`);
+
+--
+-- Index pour la table `etat`
+--
+ALTER TABLE `etat`
+  ADD PRIMARY KEY (`id_etat`);
+
+--
+-- Index pour la table `etudiant`
+--
+ALTER TABLE `etudiant`
+  ADD PRIMARY KEY (`id_etudiant`), ADD KEY `prenom` (`prenom`,`nom`,`identite_payeur`);
+
+--
+-- Index pour la table `paiement`
+--
+ALTER TABLE `paiement`
+  ADD PRIMARY KEY (`id_paiement`);
+
+--
+-- Index pour la table `pays`
+--
+ALTER TABLE `pays`
+  ADD PRIMARY KEY (`id_pays`);
+
+--
+-- Index pour la table `recepisse`
+--
+ALTER TABLE `recepisse`
+  ADD PRIMARY KEY (`id_recepisse`);
+
+--
+-- Index pour la table `type_paiement`
+--
+ALTER TABLE `type_paiement`
+  ADD PRIMARY KEY (`id_type_paiement`);
+
+--
+-- AUTO_INCREMENT pour les tables exportées
+--
+
+--
+-- AUTO_INCREMENT pour la table `diplome`
+--
+ALTER TABLE `diplome`
+  MODIFY `id_diplome` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=33;
+--
+-- AUTO_INCREMENT pour la table `droits`
+--
+ALTER TABLE `droits`
+  MODIFY `id_droit` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT pour la table `etat`
+--
+ALTER TABLE `etat`
+  MODIFY `id_etat` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT pour la table `etudiant`
+--
+ALTER TABLE `etudiant`
+  MODIFY `id_etudiant` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=24;
+--
+-- AUTO_INCREMENT pour la table `paiement`
+--
+ALTER TABLE `paiement`
+  MODIFY `id_paiement` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `pays`
+--
+ALTER TABLE `pays`
+  MODIFY `id_pays` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=242;
+--
+-- AUTO_INCREMENT pour la table `recepisse`
+--
+ALTER TABLE `recepisse`
+  MODIFY `id_recepisse` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT pour la table `type_paiement`
+--
+ALTER TABLE `type_paiement`
+  MODIFY `id_type_paiement` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Contraintes pour les tables exportées
 --
 
 --
--- Contraintes pour la table `a fait`
+-- Contraintes pour la table `a_fait`
 --
-ALTER TABLE `a fait`
-  ADD CONSTRAINT `a fait_ibfk_1` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiant` (`id_etudiant`),
-  ADD CONSTRAINT `a fait_ibfk_2` FOREIGN KEY (`id_paiement`) REFERENCES `paiement` (`id_paiement`);
+ALTER TABLE `a_fait`
+ADD CONSTRAINT `a_fait_ibfk_1` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiant` (`id_etudiant`),
+ADD CONSTRAINT `a_fait_ibfk_2` FOREIGN KEY (`id_paiement`) REFERENCES `paiement` (`id_paiement`);
 
 --
--- Contraintes pour la table `est de type`
+-- Contraintes pour la table `est_de_type`
 --
-ALTER TABLE `est de type`
-  ADD CONSTRAINT `est de type_ibfk_1` FOREIGN KEY (`id_paiement`) REFERENCES `paiement` (`id_paiement`),
-  ADD CONSTRAINT `est de type_ibfk_2` FOREIGN KEY (`id_type_paiement`) REFERENCES `type_paiement` (`id_type_paiement`);
+ALTER TABLE `est_de_type`
+ADD CONSTRAINT `est_de_type_ibfk_1` FOREIGN KEY (`id_paiement`) REFERENCES `paiement` (`id_paiement`),
+ADD CONSTRAINT `est_de_type_ibfk_2` FOREIGN KEY (`id_type_paiement`) REFERENCES `type_paiement` (`id_type_paiement`);
 
 --
--- Contraintes pour la table `est en`
+-- Contraintes pour la table `est_en`
 --
-ALTER TABLE `est en`
-  ADD CONSTRAINT `est en_ibfk_1` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiant` (`id_etudiant`),
-  ADD CONSTRAINT `est en_ibfk_2` FOREIGN KEY (`id_diplome`) REFERENCES `diplome` (`id_diplome`);
+ALTER TABLE `est_en`
+ADD CONSTRAINT `est_en_ibfk_1` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiant` (`id_etudiant`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `est_en_ibfk_2` FOREIGN KEY (`id_diplome`) REFERENCES `diplome` (`id_diplome`) ON DELETE CASCADE;
 
 --
--- Contraintes pour la table `est en situation de`
+-- Contraintes pour la table `est_en_situation_de`
 --
-ALTER TABLE `est en situation de`
-  ADD CONSTRAINT `est en situation de_ibfk_1` FOREIGN KEY (`id_etat`) REFERENCES `etat` (`id_etat`),
-  ADD CONSTRAINT `est en situation de_ibfk_2` FOREIGN KEY (`id_paiement`) REFERENCES `paiement` (`id_paiement`);
+ALTER TABLE `est_en_situation_de`
+ADD CONSTRAINT `est_en_situation_de_ibfk_1` FOREIGN KEY (`id_etat`) REFERENCES `etat` (`id_etat`),
+ADD CONSTRAINT `est_en_situation_de_ibfk_2` FOREIGN KEY (`id_paiement`) REFERENCES `paiement` (`id_paiement`);
 
 --
--- Contraintes pour la table `est originaire de`
+-- Contraintes pour la table `est_originaire_de`
 --
-ALTER TABLE `est originaire de`
-  ADD CONSTRAINT `est originaire de_ibfk_1` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiant` (`id_etudiant`),
-  ADD CONSTRAINT `est originaire de_ibfk_2` FOREIGN KEY (`id_pays`) REFERENCES `pays` (`id_pays`);
+ALTER TABLE `est_originaire_de`
+ADD CONSTRAINT `est_originaire_de_ibfk_1` FOREIGN KEY (`id_etudiant`) REFERENCES `etudiant` (`id_etudiant`) ON DELETE CASCADE,
+ADD CONSTRAINT `est_originaire_de_ibfk_2` FOREIGN KEY (`id_pays`) REFERENCES `pays` (`id_pays`) ON DELETE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
